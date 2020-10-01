@@ -1,14 +1,26 @@
 import React from 'react'
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Button, Image, Alert } from 'react-native'
+import firebase from '@react-native-firebase/app'
+
+
 export default class Login extends React.Component {
   state = { email: '', password: '', errorMessage: null }
-  handleLogin = () => {
-    // TODO: Firebase stuff...
+  handleLogin = async (email , password) => {
+      try {
+        let response = await firebase.auth().signInWithEmailAndPassword( this.state.email, this.state.password)
+        if (response) {
+          Alert.alert('Success', 'Authenticated successfully')
+        }
+      } catch (e) {
+        console.error(e.message)
+      }
     console.log('handleLogin')
   }
+
   render() {
     return (
       <View style={styles.container}>
+        <Image style={styles.img} source={require('./skoda.png')}/>
         <Text>Login</Text>
         {this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
@@ -30,10 +42,7 @@ export default class Login extends React.Component {
           value={this.state.password}
         />
         <Button title="Login" onPress={this.handleLogin} />
-        <Button
-          title="Don't have an account? Sign Up"
-          onPress={() => this.props.navigation.navigate('SignUp')}
-        />
+        
       </View>
     )
   }
@@ -50,5 +59,9 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     marginTop: 8
+  },
+  img: {
+    width: 150,
+    height: 150,
   }
 })
