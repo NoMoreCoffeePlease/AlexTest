@@ -25,6 +25,7 @@ export default class SignUp extends React.Component {
       if (response) {
         this.handleFirestore();
         Alert.alert('Success', 'Registration successfully');
+        this.props.navigation.navigate('Main');
       }
     } catch (e) {
       console.error(e.message);
