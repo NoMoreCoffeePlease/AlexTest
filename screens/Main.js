@@ -2,13 +2,30 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, TextInput, Image, Text, View, Button} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import firebase from '@react-native-firebase/app'
+import firebase from '@react-native-firebase/app';
+import {connect} from 'react-redux';
+import {GET_COUNTRY, GET_COUNTRY_REQUEST} from './redux/actions';
+
+const mapStateToProps = (state, props) => ({
+   country : state.reduxV2
+
+  
+});
+
+const mapDispatchToProps = (dispatch, props) => ({
+  getCountryAction: () => {
+    dispatch({
+      type: GET_COUNTRY_REQUEST,
+      payload: (''),
+    });
+  },
+});
 
 
-const Main = ({navigation, route}) => {
+const Main = ({navigation, route, country, getCountryAction}) => {
   console.log(route);
   const [number, setNumber] = useState('');
-  const [country, setCountry] = useState('');
+  // const [country, setCountry] = useState('');
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
   const [name, setName] = useState('');
@@ -117,6 +134,11 @@ const updateSubmit = () => {
     return subscriber; 
   }, []);
 
+  useEffect(() => {
+    getCountryAction();
+    console.log('test', getCountryAction())
+  },[getCountryAction]);
+
   if (initializing) return null;
 
   if (!user) {
@@ -165,6 +187,7 @@ const updateSubmit = () => {
 
         <Button title="Delete function" onPress={() => deleteFunction()} />
         <Button title="Users" onPress={() => getUsers()} />
+        <Text>TEst: {country}</Text>
 
 
         </View>
@@ -197,4 +220,6 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Main;
+export default  connect (mapStateToProps, mapDispatchToProps)(Main);
+
+

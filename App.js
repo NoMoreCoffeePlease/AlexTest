@@ -6,7 +6,9 @@ import SignUp from './screens/SignUp';
 import Main from './screens/Main';
 import {roots} from './roots';
 
-function App() {
+
+
+const  App = () =>  {
   const Stack = createStackNavigator();
 
   return (

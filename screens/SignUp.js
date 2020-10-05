@@ -12,6 +12,7 @@ import auth, {firebase} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import App from '../App';
 
+
 firebase.initializeApp(App);
 
 export default class SignUp extends React.Component {
@@ -49,6 +50,8 @@ export default class SignUp extends React.Component {
   };
 
   render() {
+    const {userId} = this.props;
+    let result;
     return (
       <View style={styles.container}>
         <Image style={styles.img} source={require('./skoda.png')} />
@@ -81,6 +84,10 @@ export default class SignUp extends React.Component {
     );
   }
 }
+
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
