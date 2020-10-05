@@ -24,8 +24,9 @@ const Main = ({navigation, route}) => {
         country: country,
       })
       .then(() => {
-        console.log('User added!');
+        console.log('User added!',s);
       });
+      console.log('user', userDocument)
   };
 
   const logOut = () => {
@@ -41,8 +42,8 @@ const updateSubmit = () => {
   .update({
     Nume: name,
   }) 
-  .then(() => {
-    console.log('User updated!');
+  .then((ceva) => {
+    console.log('User updated!',ceva);
   });
 }
 
@@ -82,6 +83,29 @@ const updateSubmit = () => {
         console.log('User added!');
       });
   }
+
+  const getUsers = () => {
+    const id = route.params.id;
+    const users = firestore()
+    .collection('users').doc(id)
+    .update({
+      id: route.params.id
+    })
+    
+    const getUsers = 
+    firestore()
+    .collection('users')
+    .get()
+    .then(querySnapshot => {
+      console.log('Total users: ', querySnapshot.size);
+  
+      querySnapshot.forEach(documentSnapshot => {
+        console.log('User ID: ', documentSnapshot.id);
+      });
+    });
+  
+  }
+  
 
   function onAuthStateChanged(user) {
     setUser(user);
@@ -140,6 +164,8 @@ const updateSubmit = () => {
         <Button title="Add function for delete" onPress={() => addToDelete()} />
 
         <Button title="Delete function" onPress={() => deleteFunction()} />
+        <Button title="Users" onPress={() => getUsers()} />
+
 
         </View>
       </View>
