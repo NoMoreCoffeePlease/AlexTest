@@ -11,7 +11,7 @@ function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={roots.login}>
+      <Stack.Navigator initialRouteName={roots.main}>
         <Stack.Screen name={roots.main} component={Main} />
         <Stack.Screen name={roots.signUp} component={SignUp} />
         <Stack.Screen name={roots.login} component={Login} />

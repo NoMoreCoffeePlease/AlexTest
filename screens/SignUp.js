@@ -15,8 +15,8 @@ import App from '../App';
 firebase.initializeApp(App);
 
 export default class SignUp extends React.Component {
-  state = {email: '', password: '', errorMessage: null};
-
+  state = {email: '', password: '', errorMessage: null,id:''};
+  
   handleSignUp = async (email, password) => {
     try {
       let response = await firebase
@@ -24,8 +24,6 @@ export default class SignUp extends React.Component {
         .createUserWithEmailAndPassword(this.state.email, this.state.password);
       if (response) {
         this.handleFirestore();
-        Alert.alert('Success', 'Registration successfully');
-        this.props.navigation.navigate('Main');
       }
     } catch (e) {
       console.error(e.message);
@@ -41,8 +39,12 @@ export default class SignUp extends React.Component {
         email: this.state.email,
         password: this.state.password,
       })
-      .then(() => {
-        console.log('User added!');
+      .then((doc) => {
+        Alert.alert('Success', 'Registration successfully');
+        this.props.navigation.navigate('Main',{
+          id:doc.id
+        });
+        console.log('User added! to ',doc.id);
       });
   };
 
