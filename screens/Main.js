@@ -11,6 +11,8 @@ const Main = ({navigation, route}) => {
   const [country, setCountry] = useState('');
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
+  const [name, setName] = useState('');
+
 
   const handleSubmit = () => {
 
@@ -32,6 +34,18 @@ const Main = ({navigation, route}) => {
   .then(() => console.log('User signed out!'));
   }
 
+const updateSubmit = () => {
+  firestore()
+  .collection('Prezenta')
+  .doc('Semnaturi')
+  .update({
+    Nume: name,
+  }) 
+  .then(() => {
+    console.log('User updated!');
+  });
+}
+
   const getInfo = async () => {
     const infos = [];
     await firebase.firestore().collection('Info').get()
@@ -44,6 +58,29 @@ const Main = ({navigation, route}) => {
 
     });
     return infos;
+  }
+
+  const deleteFunction = async () => {
+    const id = route.params.id;
+    firestore()
+  .collection('Delete')
+  .doc(id)
+  .delete({})
+  .then(() => {
+    console.log('User deleted!');
+  });
+  }
+
+  const addToDelete = async () => {
+    const id = route.params.id;
+    const userDocument = firestore()
+      .collection('Delete').doc(id)
+      .set({
+       delete: 'sters'
+      })
+      .then(() => {
+        console.log('User added!');
+      });
   }
 
   function onAuthStateChanged(user) {
@@ -91,6 +128,19 @@ const Main = ({navigation, route}) => {
         <Button title="Log out" onPress={() => logOut()} />
         <View  style ={styles.distant}>
         <Button title="Get info" onPress={() => getInfo() }/> 
+        <Text style={styles.text}>Prezenta! Semneaza aici: </Text>
+        <TextInput
+          style={styles.textInput}
+          autoCapitalize="none"
+          placeholder="Numele"
+          onChangeText={(name) => setName({name})}
+          value={country}
+        />
+        <Button title="Update form" onPress={() => updateSubmit()} />
+        <Button title="Add function for delete" onPress={() => addToDelete()} />
+
+        <Button title="Delete function" onPress={() => deleteFunction()} />
+
         </View>
       </View>
     </View>
